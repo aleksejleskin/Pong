@@ -1,13 +1,37 @@
-﻿  PhysicsWorld.cpp
-c:\users\aleks\documents\github\pong\pong\physicsworld.cpp(38): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
-c:\users\aleks\documents\github\pong\pong\physicsworld.cpp(39): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
-  Generating Code...
-  Skipping... (no relevant changes detected)
+﻿  pShapeSphere.cpp
+c:\users\aleks\documents\github\pong\pong\spVector3.h(95): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\aleks\documents\github\pong\pong\aMath.h(86): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  pShapeBox.cpp
+c:\users\aleks\documents\github\pong\pong\spVector3.h(95): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\aleks\documents\github\pong\pong\aMath.h(86): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  pShape.cpp
+c:\users\aleks\documents\github\pong\pong\spVector3.h(95): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\aleks\documents\github\pong\pong\aMath.h(86): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
   pRigidBody.cpp
+c:\users\aleks\documents\github\pong\pong\spVector3.h(95): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\aleks\documents\github\pong\pong\aMath.h(86): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
   RigidBodyObject.cpp
+c:\users\aleks\documents\github\pong\pong\spVector3.h(95): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\aleks\documents\github\pong\pong\aMath.h(86): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  PhysicsWorld.cpp
+c:\users\aleks\documents\github\pong\pong\spVector3.h(95): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\aleks\documents\github\pong\pong\aMath.h(86): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+PhysicsWorld.cpp(38): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+PhysicsWorld.cpp(39): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
   Object.cpp
+c:\users\aleks\documents\github\pong\pong\spVector3.h(95): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\aleks\documents\github\pong\pong\aMath.h(86): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
   Initialize.cpp
   Game.cpp
+c:\users\aleks\documents\github\pong\pong\spVector3.h(95): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\aleks\documents\github\pong\pong\aMath.h(86): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+Game.cpp(23): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
   DrawHelper.cpp
+DrawHelper.cpp(38): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+DrawHelper.cpp(47): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+DrawHelper.cpp(48): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
   Collision.cpp
+c:\users\aleks\documents\github\pong\pong\spVector3.h(95): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\aleks\documents\github\pong\pong\aMath.h(86): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  Generating Code...
   Pong.vcxproj -> C:\Users\aleks\Documents\GitHub\Pong\Debug\Pong.exe

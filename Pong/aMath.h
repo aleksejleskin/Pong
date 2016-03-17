@@ -2,10 +2,12 @@
 #define AMATH
 
 #include <SDL.h>
+#include "spVector3.h"
 
 namespace aMath
 {
-	struct Vector3 
+
+	struct Vector3
 	{
 		Vector3()
 		{
@@ -59,6 +61,35 @@ namespace aMath
 			vOut.z = this->z + _b.z;
 			return vOut;
 		}
+
+		Vector3 operator+ (const Vector3& _b)
+		{
+			Vector3 vOut;
+			vOut.x = this->x + _b.x;
+			vOut.y = this->y + _b.y;
+			vOut.z = this->z + _b.z;
+			return vOut;
+		}
+
+		Vector3 operator/ (const float& _b)
+		{
+			Vector3 vOut;
+			vOut.x = this->x / _b;
+			vOut.y = this->y / _b;
+			vOut.z = this->z / _b;
+			return vOut;
+		}
+
+		Vector3 Normalize()
+		{
+			Vector3 vOut;
+			float 	length = sqrt((this->x * this->x) + (this->y * this->y) + (this->z * this->z));
+			//normalized vector
+			vOut.x = this->x / length;
+			vOut.y = this->y / length;
+			vOut.z = this->z / length;
+			return	vOut;
+		}
 	};
 
 	struct Vector2
@@ -79,7 +110,7 @@ namespace aMath
 		Vector2 operator+ (const Vector2& _a)
 		{
 			Vector2 vOut;
-			vOut.x = this->x +_a.x;
+			vOut.x = this->x + _a.x;
 			vOut.y = this->y + _a.y;
 			return vOut;
 		}

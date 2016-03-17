@@ -2,7 +2,8 @@
 #include "pShape.h"
 #include "aMath.h"
 using namespace aMath;
-
+//
+//collision Callback Delegate
 class pRigidBody
 {
 public:
@@ -23,8 +24,10 @@ public:
 
 	pRigidBody(float _mass, Vector3 _position, pShape* _CollisionShape);
 	pRigidBody(const RigidBodyConstructorInfo _RigidBodyInfo);
-
 	~pRigidBody();
+	
+	//FUCNTIONS
+	void ApplyImpulse(Vector3 _forceDirection);
 
 	pShape* GetShape();
 	Vector3 GetPosition();
@@ -33,7 +36,10 @@ public:
 	float GetRestitution();
 	float GetMass();
 	void SetUpRigidBody(const RigidBodyConstructorInfo _RigidBodyInfo);
-
+	float GetMassInverse();
+	//collision check
+	void CollisionStateChanged(bool _isColliding);
+	bool m_isColliding;
 
 	pShape* m_CollisionShape;
 	Vector3 m_Postion;
@@ -41,8 +47,9 @@ public:
 	Vector3	m_Rotation;
 
 	float	m_Mass;
-	Vector3 m_Velocity;
+	Vector3 m_LinearVelocity;
 	float	m_Restitution;
-
+	Vector3 m_Force;
+	float	m_MassInverse;
 };
 

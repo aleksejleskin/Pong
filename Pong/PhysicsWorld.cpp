@@ -23,7 +23,7 @@ PhysicsWorld::~PhysicsWorld()
 
 }
 
-bool PhysicsWorld::CircletoCircle(pRigidBody *a, pRigidBody *b)
+bool PhysicsWorld::CircletoCircle(class pRigidBody *a, class pRigidBody *b)
 {
 	if (a != nullptr || b != nullptr)
 	{
@@ -38,7 +38,6 @@ bool PhysicsWorld::CircletoCircle(pRigidBody *a, pRigidBody *b)
 		float DistanceX = aPow((aPos.x - bPos.x), 2);
 		float DistanceY = aPow((aPos.y - bPos.y), 2);
 		return DistanceX + DistanceY <= r;
-
 	}
 	else
 	{
@@ -73,21 +72,35 @@ void PhysicsWorld::ResolveCollision(pRigidBody *a, pRigidBody *b, Vector3 _norma
 	float velAlongNormal = DotProduct(rv, _normal);
 
 		// Do not resolve if velocities are separating
-	//	if (velAlongNormal > 0)
-			//return;
+	//if (!velAlongNormal > 0)
+	{
+		//return;
 
-	// Calculate restitution
-	float e = Min(a->GetRestitution(), a->GetRestitution());
+// Calculate restitution
+		float e = Min(a->GetRestitution(), a->GetRestitution());
 
 		// Calculate impulse scalar
-	float j = -(1 + e) * velAlongNormal;
-	j /= 1 / a->GetMass() + 1 / b->GetMass();
+		float j = (1 + e) * -1 * velAlongNormal;
+			j /= 1 / a->m_Mass + 1 / b->m_Mass;
 
 		// Apply impulse
-	Vector3 impulse = j * _normal;
-	
-	a->m_Velocity -= 1 / a->m_Mass * impulse;
-	b->m_Velocity += 1 / b->m_Mass * impulse;
+		Vector3 impulse = j * _normal;
+
+		Vector3 newVela = 1 / a->GetMass() * impulse;
+		a->m_LinearVelocity = a->m_LinearVelocity - newVela;
+
+		Vector3 newVelb = 1 / b->GetMass() * impulse;
+		b->m_LinearVelocity = b->m_LinearVelocity + newVelb;
+	}
+}
+
+void PhysicsWorld::EulerStep(float _deltaTick, pRigidBody * _rigidBody)
+{
+	Vector3 newPos = _rigidBody->m_LinearVelocity * _deltaTick;
+	_rigidBody->m_Postion = _rigidBody->m_Postion + newPos;
+
+	Vector3 newVel  = (1 / _rigidBody->m_Mass * _rigidBody->m_Force) * _deltaTick;
+	_rigidBody->m_LinearVelocity = _rigidBody->m_LinearVelocity + newVel;
 }
 
 pRigidBody* PhysicsWorld::CreateRigidBody(float _mass, Vector3 _position, pShape* _Shape)
@@ -100,22 +113,32 @@ pRigidBody* PhysicsWorld::CreateRigidBody(float _mass, Vector3 _position, pShape
 	return newRigidBody;
 }
 
-void PhysicsWorld::stepSimulation()
+void PhysicsWorld::stepSimulation(float _deltaTick)
 {
+
 	for each (pRigidBody* obj1 in m_RigidBodyList)
 	{
+		EulerStep(_deltaTick, obj1);
+
 		for each (pRigidBody* obj2 in m_RigidBodyList)
 		{
 			if (obj1 != obj2)
 			{
-
 				if((this->*m_CollisionCheckArray[obj1->GetShape()->GetShapeType()][obj2->GetShape()->GetShapeType()])(obj1, obj2))
 				{
-					int  a = 5;
+					obj1->CollisionStateChanged(true);
+					obj2->CollisionStateChanged(true);
+
+					Vector3 direction = obj2->GetPosition() - obj1->GetPosition();
+					Vector3 normal = direction.Normalize();
+					ResolveCollision(obj1, obj2, normal);
+					//std::cout << "COLLIDING" << endl;
 				}
 				else
 				{
-					int  a = 5;
+					obj1->CollisionStateChanged(false);
+					obj2->CollisionStateChanged(false);
+					//std::cout << "NOT COLLIDING" <<endl;
 				}
 			}
 		}

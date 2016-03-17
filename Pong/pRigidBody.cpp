@@ -23,10 +23,14 @@ void pRigidBody::SetUpRigidBody(const RigidBodyConstructorInfo _RigidBodyInfo)
 	m_CollisionShape = _RigidBodyInfo.collisionShape;
 	m_Postion = _RigidBodyInfo.position;
 	m_Mass = _RigidBodyInfo.mass;
+	m_MassInverse = _RigidBodyInfo.mass * -1;
 	m_Scale = Vector3(.0f, .0f, .0f);
 	m_Rotation = Vector3(.0f, .0f, .0f);
-	m_Velocity = Vector3(.0f, .0f, .0f);
+	m_LinearVelocity = Vector3(.0f, .0f, .0f);
 	m_Restitution = 0.1f;
+	m_Force = Vector3(.0f, .0f, .0f);
+
+	m_isColliding = false;
 }
 
 pShape* pRigidBody::GetShape()
@@ -41,7 +45,7 @@ Vector3 pRigidBody::GetPosition()
 
 Vector3 pRigidBody::GetVelocity()
 {
-	return m_Velocity;
+	return m_LinearVelocity;
 }
 
 void pRigidBody::SetPosition(Vector3 _newPos)
@@ -57,4 +61,19 @@ float pRigidBody::GetMass()
 float pRigidBody::GetRestitution()
 {
 	return m_Restitution;
+}
+
+void pRigidBody::ApplyImpulse(Vector3 _forceDirection)
+{
+	m_LinearVelocity = m_LinearVelocity + (1 / m_Mass * _forceDirection);
+}
+
+void pRigidBody::CollisionStateChanged(bool _isColliding)
+{
+	m_isColliding = _isColliding;
+}
+
+float pRigidBody::GetMassInverse()
+{
+	return m_MassInverse;
 }

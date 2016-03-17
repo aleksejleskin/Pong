@@ -25,6 +25,9 @@
     <Filter Include="Header Files\Helpers">
       <UniqueIdentifier>{1a2ad5dd-a064-43dc-bb93-841396fe9529}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Math">
+      <UniqueIdentifier>{460eb398-3967-49d4-94c1-bd1b45f2445a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="res_path.h">
@@ -65,6 +68,9 @@
     </ClInclude>
     <ClInclude Include="DrawHelper.h">
       <Filter>Header Files\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="spVector3.h">
+      <Filter>Header Files\Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

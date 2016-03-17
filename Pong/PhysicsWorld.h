@@ -23,13 +23,19 @@ public:
 	bool CircletoCircle(class pRigidBody *a, class pRigidBody *b);
 	bool AABBtoAABB(class pRigidBody *a, class pRigidBody *b);
 
-	void stepSimulation();
+	void stepSimulation(float _dt);
+
+
+
 
 	CollisionCheck m_CollisionCheckArray[2][2];
-	void ResolveCollision(pRigidBody *a, pRigidBody *b, Vector3 _normal);
+	void ResolveCollision(class pRigidBody *a, class pRigidBody *b, Vector3 _normal);
 
-	pRigidBody * CreateRigidBody(float _mass, Vector3 _position,class pShape* _Shape);
+	pRigidBody * CreateRigidBody(float _mass, Vector3 _position, class pShape* _Shape);
 
 	std::vector<pRigidBody*> m_RigidBodyList;
+
+	//Intigrations
+	void EulerStep(float _deltaTick, class pRigidBody * _rigidBody);
 };
 
