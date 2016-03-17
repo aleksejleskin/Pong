@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -13,18 +13,19 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{9419F710-73F4-476E-815E-1744AA636ED0}</ProjectGuid>
     <RootNamespace>Pong</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -44,11 +45,11 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\a-allesk\Desktop\SDL\SDL2-2.0.4\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\SDL2-2.0.4\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\a-allesk\Desktop\SDL\SDL2-2.0.4\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\SDL2-2.0.4\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
@@ -69,19 +70,30 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Collision.h" />
+    <ClInclude Include="DrawHelper.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="Math.h" />
+    <ClInclude Include="aMath.h" />
     <ClInclude Include="Object.h" />
-    <ClInclude Include="Physics.h" />
+    <ClInclude Include="pRigidBody.h" />
+    <ClInclude Include="pShape.h" />
+    <ClInclude Include="pShapeBox.h" />
+    <ClInclude Include="pShapeSphere.h" />
+    <ClInclude Include="pGlobal.h" />
+    <ClInclude Include="PhysicsWorld.h" />
     <ClInclude Include="res_path.h" />
     <ClInclude Include="RigidBodyObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="DrawHelper.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Initialize.cpp" />
     <ClCompile Include="Object.cpp" />
-    <ClCompile Include="Physics.cpp" />
+    <ClCompile Include="pRigidBody.cpp" />
+    <ClCompile Include="pShape.cpp" />
+    <ClCompile Include="pShapeBox.cpp" />
+    <ClCompile Include="pShapeSphere.cpp" />
+    <ClCompile Include="PhysicsWorld.cpp" />
     <ClCompile Include="RigidBodyObject.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

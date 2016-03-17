@@ -1,11 +1,29 @@
 #pragma once
-#include "Math.h"
+#include "aMath.h"
 #include <string>
 #include "SDL.h"
 #include "Object.h"
+#include <vector>
 
-using namespace Math;
+using namespace aMath;
 using namespace std;
+
+struct Shape
+{
+
+};
+
+struct ShapeCircle : Shape
+{
+	float radius;
+	Vector2 position;
+};
+
+struct ShapeAABB : Shape
+{
+	Vector2 min;
+	Vector2 max;
+};
 
 struct AABB 
 {
@@ -30,5 +48,4 @@ public:
 	bool	CheckCollision(class Object a, class Object b);
 
 protected:
-
 };

@@ -1,9 +1,9 @@
 #pragma once
-#include "Math.h"
+#include "aMath.h"
 #include <string>
 #include "SDL.h"
 
-using namespace Math;
+using namespace aMath;
 using namespace std;
 
 class Game
