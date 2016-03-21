@@ -1,13 +1,17 @@
 #pragma once
 
+//included due to sqrt use, need custom float implementation.
 #include <SDL.h>
 
-struct spVector3
+class spVector3
 {
+public:
+
 	float x;
 	float y;
 	float z;
 
+	//Default constructor initializes vector components to zero
 	spVector3()
 	{
 		x = 0.0f;
@@ -22,55 +26,31 @@ struct spVector3
 		z = _z;
 	}
 
-	inline spVector3& operator+= (const spVector3& _vIn)
+	__forceinline spVector3& operator+= (const spVector3& _vIn)
 	{
-		(x += _vIn.x);
-		(y += _vIn.y);
-		(z += _vIn.z);
+		x += _vIn.x;
+		y += _vIn.y;
+		z += _vIn.z;
 		return *this;
 	}
 
-	spVector3& operator+ (const spVector3 &_vIn)
+	__forceinline spVector3& operator-= (const spVector3& _vIn)
 	{
-		(x + _vIn.x);
-		(y + _vIn.y);
-		(z + _vIn.z);
+		x -= _vIn.x;
+		y -= _vIn.y;
+		z -= _vIn.z;
 		return *this;
 	}
 
-	inline spVector3& operator-= (const spVector3& _vIn)
+	__forceinline spVector3& operator/= (const spVector3 &_vIn)
 	{
-		(x -= _vIn.x);
-		(y -= _vIn.y);
-		(z -= _vIn.z);
+		x /= _vIn.x;
+		y /= _vIn.y;
+		z /= _vIn.z;
 		return *this;
 	}
 
-	spVector3& operator- (const spVector3 &_vIn)
-	{
-		return spVector3(
-			x - _vIn.x,
-			y - _vIn.y,
-			z - _vIn.z);
-	}
-
-	spVector3 operator/= (const spVector3 &_vIn)
-	{
-		(x /= _vIn.x);
-		(y /= _vIn.y);
-		(z /= _vIn.z);
-		return *this;
-	}
-
-	spVector3 operator/ (const spVector3 &_vIn)
-	{
-		return spVector3(
-			x / _vIn.x,
-			y / _vIn.y,
-			z / _vIn.z);
-	}
-
-	inline spVector3& operator*= (const spVector3& _vIn)
+	__forceinline spVector3& operator*= (const spVector3& _vIn)
 	{
 		x *= _vIn.x;
 		y *= _vIn.y;
@@ -78,24 +58,84 @@ struct spVector3
 		return *this;
 	}
 
-	inline spVector3 operator* (const spVector3& _vIn)
+	__forceinline spVector3 Normalize()
 	{
 		return spVector3(
-			x * _vIn.x,
-			y * _vIn.y,
-			z * _vIn.z);
+		x / sqrtf(Dot(*this, *this)),
+		y / sqrtf(Dot(*this, *this)),
+		z / sqrtf(Dot(*this, *this)));
 	}
 
-	spVector3& Normalize()
+	__forceinline float Length()
 	{
-		spVector3 vOut;
-		float length = sqrt(
-			(x * x) +
-			(y * y) +
-			(z * z));
+		return (sqrtf(Dot(*this, *this)));
+	}
 
-		vOut.x = x / length;
-		vOut.y = y / length;
-		vOut.z = z / length;
+private:
+	//some fucntions must operate on the spVector3 obejct for ease of use, but consist of other 
+	__forceinline float Dot(const spVector3 &_vIn1, const spVector3 &_vIn2)
+	{
+		return (_vIn1.x * _vIn2.x + _vIn1.y * _vIn2.y + _vIn1.z * _vIn2.z);
 	}
 };
+
+__forceinline float Dot(const spVector3 &_vIn1, const spVector3 &_vIn2)
+{
+	return (_vIn1.x * _vIn2.x + _vIn1.y * _vIn2.y + _vIn1.z * _vIn2.z);
+}
+
+__forceinline spVector3 operator+ (const spVector3 &_vIn1, const spVector3 &_vIn2)
+{
+	return spVector3(
+		_vIn1.x + _vIn2.x,
+		_vIn1.y + _vIn2.y,
+		_vIn1.z + _vIn2.z);
+}
+
+__forceinline spVector3 operator- (const spVector3 &_vIn1, const spVector3 &_vIn2)
+{
+	return spVector3(
+		_vIn1.x - _vIn2.x,
+		_vIn1.y - _vIn2.y,
+		_vIn1.z - _vIn2.z);
+}
+
+__forceinline spVector3 operator* (const spVector3 &_vIn1, const spVector3 &_vIn2)
+{
+	return spVector3(
+		_vIn1.x * _vIn2.x,
+		_vIn1.y * _vIn2.y,
+		_vIn1.z * _vIn2.z);
+}
+
+__forceinline spVector3 operator/ (const spVector3 &_vIn1, const spVector3 &_vIn2)
+{
+	return spVector3(
+		_vIn1.x / _vIn2.x,
+		_vIn1.y / _vIn2.y,
+		_vIn1.z / _vIn2.z);
+}
+
+//Multiply each vector components by the input float, output new vector.
+__forceinline spVector3 operator* (const spVector3 &_vIn1, const float &_fIn2)
+{
+	return spVector3(
+		_vIn1.x * _fIn2,
+		_vIn1.y * _fIn2,
+		_vIn1.z * _fIn2);
+}
+
+//implementation vector * float already exists, will call existing function.
+__forceinline spVector3 operator* (const float &_fIn1, const spVector3 &_vIn2)
+{
+	return _vIn2 * _fIn1;
+}
+
+//If all coresponding components are of the same value, then vectors are equal, return true
+__forceinline bool operator== (const spVector3 &_vIn1, const spVector3 &_vIn2)
+{
+	return (
+		(_vIn1.x == _vIn2.x) &&
+		(_vIn1.y == _vIn2.y) &&
+		(_vIn1.z == _vIn2.z));
+}

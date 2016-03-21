@@ -13,20 +13,26 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\Physics">
-      <UniqueIdentifier>{07c0bbe2-ab54-46de-8304-3e84a6bd5b8e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Physics">
-      <UniqueIdentifier>{6616f6c3-450d-49ab-862e-f413725b1192}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Helpers">
       <UniqueIdentifier>{1fe16fd4-0637-4be5-8595-bf0b0420b22c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Helpers">
       <UniqueIdentifier>{1a2ad5dd-a064-43dc-bb93-841396fe9529}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Math">
+    <Filter Include="Source Files\SimplePhysics">
+      <UniqueIdentifier>{07c0bbe2-ab54-46de-8304-3e84a6bd5b8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\SimplePhysicsMath">
       <UniqueIdentifier>{460eb398-3967-49d4-94c1-bd1b45f2445a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\SimplePhysics">
+      <UniqueIdentifier>{6616f6c3-450d-49ab-862e-f413725b1192}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PongGameObjects">
+      <UniqueIdentifier>{0cc8e5a9-09f4-4c82-b1d4-c0543a4585ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\PongGameObjects">
+      <UniqueIdentifier>{05693463-b1bc-4320-a5b1-edb85916e7dc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -39,29 +45,23 @@
     <ClInclude Include="Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Collision.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RigidBodyObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PhysicsWorld.h">
-      <Filter>Header Files\Physics</Filter>
+      <Filter>Header Files\SimplePhysics</Filter>
     </ClInclude>
     <ClInclude Include="pGlobal.h">
-      <Filter>Header Files\Physics</Filter>
+      <Filter>Header Files\SimplePhysics</Filter>
     </ClInclude>
     <ClInclude Include="pShapeBox.h">
-      <Filter>Header Files\Physics</Filter>
+      <Filter>Header Files\SimplePhysics</Filter>
     </ClInclude>
     <ClInclude Include="pShape.h">
-      <Filter>Header Files\Physics</Filter>
+      <Filter>Header Files\SimplePhysics</Filter>
     </ClInclude>
     <ClInclude Include="pShapeSphere.h">
-      <Filter>Header Files\Physics</Filter>
+      <Filter>Header Files\SimplePhysics</Filter>
     </ClInclude>
     <ClInclude Include="pRigidBody.h">
-      <Filter>Header Files\Physics</Filter>
+      <Filter>Header Files\SimplePhysics</Filter>
     </ClInclude>
     <ClInclude Include="aMath.h">
       <Filter>Header Files\Helpers</Filter>
@@ -70,7 +70,25 @@
       <Filter>Header Files\Helpers</Filter>
     </ClInclude>
     <ClInclude Include="spVector3.h">
-      <Filter>Header Files\Math</Filter>
+      <Filter>Header Files\SimplePhysicsMath</Filter>
+    </ClInclude>
+    <ClInclude Include="spVector2.h">
+      <Filter>Header Files\SimplePhysicsMath</Filter>
+    </ClInclude>
+    <ClInclude Include="spScalar.h">
+      <Filter>Header Files\SimplePhysicsMath</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectRigidBody.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PongBall.h">
+      <Filter>Header Files\PongGameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerPaddle.h">
+      <Filter>Header Files\PongGameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Wall.h">
+      <Filter>Header Files\PongGameObjects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -83,29 +101,35 @@
     <ClCompile Include="Object.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Collision.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RigidBodyObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PhysicsWorld.cpp">
-      <Filter>Source Files\Physics</Filter>
+      <Filter>Source Files\SimplePhysics</Filter>
     </ClCompile>
     <ClCompile Include="pShapeBox.cpp">
-      <Filter>Source Files\Physics</Filter>
+      <Filter>Source Files\SimplePhysics</Filter>
     </ClCompile>
     <ClCompile Include="pShape.cpp">
-      <Filter>Source Files\Physics</Filter>
+      <Filter>Source Files\SimplePhysics</Filter>
     </ClCompile>
     <ClCompile Include="pShapeSphere.cpp">
-      <Filter>Source Files\Physics</Filter>
+      <Filter>Source Files\SimplePhysics</Filter>
     </ClCompile>
     <ClCompile Include="pRigidBody.cpp">
-      <Filter>Source Files\Physics</Filter>
+      <Filter>Source Files\SimplePhysics</Filter>
     </ClCompile>
     <ClCompile Include="DrawHelper.cpp">
       <Filter>Source Files\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjectRigidBody.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerPaddle.cpp">
+      <Filter>Source Files\PongGameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="PongBall.cpp">
+      <Filter>Source Files\PongGameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Wall.cpp">
+      <Filter>Source Files\PongGameObjects</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

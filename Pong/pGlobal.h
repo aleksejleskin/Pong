@@ -1,6 +1,8 @@
 #pragma once
-#include "aMath.h"
-using namespace aMath;
+//#include "aMath.h"
+#include "spVector3.h"
+//#include "pRigidBody.h"
+//using namespace aMath;
 
 enum CollisionShapesTypes
 {
@@ -13,8 +15,9 @@ enum CollisionShapesTypes
 
 struct CollisionInfo
 {
-	Vector3 ImpactPoint;
-	Vector3 ImpactNormal;
+	spVector3 ImpactPoint;
+	spVector3 ImpactNormal;
+	//pRigidBody * CollidedWith;
 };
 
 

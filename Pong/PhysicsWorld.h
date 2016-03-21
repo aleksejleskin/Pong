@@ -26,16 +26,16 @@ public:
 	void stepSimulation(float _dt);
 
 
-
-
 	CollisionCheck m_CollisionCheckArray[2][2];
-	void ResolveCollision(class pRigidBody *a, class pRigidBody *b, Vector3 _normal);
+	void ResolveCollision(class pRigidBody *a, class pRigidBody *b, spVector3 _normal);
 
-	pRigidBody * CreateRigidBody(float _mass, Vector3 _position, class pShape* _Shape);
+	pRigidBody * CreateRigidBody(float _mass, spVector3 _position, class pShape* _Shape);
+	void AddRigidBody(pRigidBody* _rb);
 
 	std::vector<pRigidBody*> m_RigidBodyList;
 
 	//Intigrations
 	void EulerStep(float _deltaTick, class pRigidBody * _rigidBody);
+
 };
 

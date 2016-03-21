@@ -3,8 +3,15 @@
 class pShapeBox : public pShape
 {
 public:
-	pShapeBox();
+	pShapeBox(spVector3 _min, spVector3 _max);
 
 	~pShapeBox();
+
+	void DrawShape(SDL_Renderer * _renderer, DrawHelper * _drawHelper, spVector2 &_position) override;
+
+	spVector3 m_min;
+	spVector3 m_max;
 };
+
+
 

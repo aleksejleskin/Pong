@@ -1,17 +1,13 @@
 #include "Game.h"
-#include "Object.h"
-#include "RigidBodyObject.h"
-#include <vector>
 #include "res_path.h"
 #include "PhysicsWorld.h"
 #include "pShapeSphere.h"
+#include "pShapeBox.h"
 #include "DrawHelper.h"
+#include "spScalar.h"
 
-vector<Object*> ObjectList;
-std::vector<Object*>current_obj;
-std::vector<Object*>::iterator iter, endList;
-PhysicsWorld* m_Physics = new PhysicsWorld();
-DrawHelper* m_DrawDebug = new DrawHelper();
+#include "PlayerPaddle.h"
+#include "PongBall.h"
 
 Game::Game(void)
 {
@@ -20,18 +16,10 @@ Game::Game(void)
 
 Game::Game(SDL_Renderer *_ren)
 {
-	float out = aPow(2, 2);
-	spVector3 vec1 = spVector3(0, 0, 0);
-	vec1 = spVector3(0, 0, 0);
-	vec1 += vec1 + vec1;
 
-	pShape* shape = new pShapeSphere(80.0f);
-	pRigidBody* body1 =  m_Physics->CreateRigidBody(10.0f, Vector3(250, 100, 0), shape);
-	body1->m_Mass = 20.0f;
-	body1->ApplyImpulse(Vector3(600, 0, 0));
-	pRigidBody* body2 = m_Physics->CreateRigidBody(10.0f, Vector3(500, 50, 0), shape);
-	body2->m_Mass = 2.0f;
-	//body2->ApplyImpulse(Vector3(1, 0, 0));
+	pShape* shapeSphere = new pShapeSphere(100.0f);
+	pShape* shapeBox = new pShapeBox(spVector3(-100, -100, 0), spVector3(100, 100, 0));
+
 
 	std::string imagePath = getResourcePath("Images") + "hello.bmp";
 	SDL_Surface* bmp = SDL_LoadBMP(imagePath.c_str());
@@ -50,78 +38,102 @@ Game::Game(SDL_Renderer *_ren)
 		//Assign Texture
 		//if(GameObjectTest->SetTexture(tex))
 		{
-		//	ObjectList.push_back(GameObjectTest);
+			GameObjectRigidBody::GORigidBodyConstructor paramaters = GameObjectRigidBody::GORigidBodyConstructor(1000000.0f, spVector3(800, 1024/2, 0), shapeBox, tex, m_Physics, m_DrawDebug);
+			PlayerPaddle * obj = new PlayerPaddle(paramaters);
+			m_Physics->AddRigidBody(obj);
+			obj->GetShape()->SetShapeDebugDraw(true);
+			//obj->ApplyImpulse(spVector3(-200, 0, 0));
+			GameObjectList.push_back(obj);
+
+			paramaters = GameObjectRigidBody::GORigidBodyConstructor(1000000.0f, spVector3(200, 1024 / 2, 0), shapeBox, tex, m_Physics, m_DrawDebug);
+			obj = new PlayerPaddle(paramaters);
+			m_Physics->AddRigidBody(obj);
+			obj->GetShape()->SetShapeDebugDraw(true);
+			//obj->ApplyImpulse(spVector3(-200, 0, 0));
+			GameObjectList.push_back(obj);
 		}
 	}
+
+	imagePath = getResourcePath("Images") + "PongBall.bmp";
+	bmp = SDL_LoadBMP(imagePath.c_str());
+
+	if (bmp == nullptr)
+	{
+		std::cout << SDL_GetError();
+	}
+	SDL_SetColorKey(bmp, SDL_TRUE, SDL_MapRGB(bmp->format, 255, 0, 255));
+
+	tex = SDL_CreateTextureFromSurface(_ren, bmp);
+	//
+	
+	if (tex != nullptr)
+	{
+		{
+			GameObjectRigidBody::GORigidBodyConstructor paramaters = GameObjectRigidBody::GORigidBodyConstructor(10.0f, spVector3(250, 1024 / 2, 0), shapeSphere, tex, m_Physics, m_DrawDebug);
+			PongBall * obj = new PongBall(paramaters);
+			m_Physics->AddRigidBody(obj);
+			obj->GetShape()->SetShapeDebugDraw(true);
+			obj->ApplyImpulse(spVector3(1000, 0, 0));
+			GameObjectList.push_back(obj);
+		}
+	}
+
+
 	SDL_FreeSurface(bmp);
 }
 
 
 Game::~Game(void)
 {
+	delete m_Physics;
+	delete m_DrawDebug;
 
+	for each (GameObjectRigidBody *obj in GameObjectList)
+	{
+		if (obj != nullptr)
+		{
+			delete(obj);
+		}
+	}
+	GameObjectList.clear();
 }
 
 void Game::Update(float _deltaTick)
 {
-	//update all objects
-	for(iter = ObjectList.begin(), endList = ObjectList.end() ; iter != endList; ++iter) 
-	{
-		(*iter)->Update(_deltaTick);
-	}
+	//Update physics, all rigidbodies
 	m_Physics->stepSimulation(_deltaTick);
+
+	//update all objects
+	for each (GameObjectRigidBody *GameObject in GameObjectList)
+	{
+		GameObject->Update(_deltaTick);
+	}
+
+
+
 	m_DrawDebug->Update(_deltaTick);
 
-	for each(pRigidBody* obj in m_Physics->m_RigidBodyList)
-	{
 
-		SDL_Colour colour;
-		colour.r = 255;
-		colour.g = 0;
-		colour.b = 0;
-		colour.a = 0;
-
-		Vector2 drawPos;
-		drawPos.x = obj->GetPosition().x;
-		drawPos.y = obj->GetPosition().y;
-
-		bool isColliding = obj->m_isColliding;
-
-		SDL_Colour SphereColour;
-		SphereColour.r = isColliding ? 0 : 255;
-		SphereColour.g = isColliding ? 255 : 0;
-		SphereColour.b = 0;
-		SphereColour.a = 0;
-
-		m_DrawDebug->Draw2DSphere(drawPos, 80, SphereColour, 16, 1.0f);
-	}
 }
 
 void Game::Render(SDL_Renderer *_ren)
 {
+	//Backgroudn Colour
 	SDL_SetRenderDrawColor(_ren, 180, 207, 236, 255);
+	//Clear the screen before drawing new frame
 	SDL_RenderClear(_ren);
 
-	//Loop Objects
-	for(iter = ObjectList.begin(), endList = ObjectList.end() ; iter != endList; ++iter) 
+
+	//Loop though all Gameobjects and draw them.
+	for each (GameObjectRigidBody *GameObject in GameObjectList)
 	{
-		(*iter)->Render(_ren);
+		GameObject->Render(_ren);
 	}
 
 	SDL_SetRenderDrawColor(_ren, 0, 0, 0, 0);
 
 	m_DrawDebug->Render(_ren);
-	for each(pRigidBody* obj in m_Physics->m_RigidBodyList)
-	{
-	
 
-		m_DrawDebug->Render(_ren);
-		
-	}
-	
+	//Draw This Frame to Screen
 	SDL_RenderPresent(_ren);
-
-	
-	
-
 }

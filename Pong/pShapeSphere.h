@@ -8,6 +8,8 @@ public:
 
 	~pShapeSphere();
 
+	void DrawShape(SDL_Renderer * _renderer, DrawHelper * _drawHelper, spVector2 &_position) override;
+
 	float GetRadius();
 
 private:

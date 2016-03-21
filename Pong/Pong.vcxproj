@@ -72,11 +72,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Collision.h" />
     <ClInclude Include="DrawHelper.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="aMath.h" />
+    <ClInclude Include="GameObjectRigidBody.h" />
     <ClInclude Include="Object.h" />
+    <ClInclude Include="PlayerPaddle.h" />
+    <ClInclude Include="PongBall.h" />
     <ClInclude Include="pRigidBody.h" />
     <ClInclude Include="pShape.h" />
     <ClInclude Include="pShapeBox.h" />
@@ -84,21 +86,25 @@
     <ClInclude Include="pGlobal.h" />
     <ClInclude Include="PhysicsWorld.h" />
     <ClInclude Include="res_path.h" />
-    <ClInclude Include="RigidBodyObject.h" />
+    <ClInclude Include="spScalar.h" />
+    <ClInclude Include="spVector2.h" />
     <ClInclude Include="spVector3.h" />
+    <ClInclude Include="Wall.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Collision.cpp" />
     <ClCompile Include="DrawHelper.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameObjectRigidBody.cpp" />
     <ClCompile Include="Initialize.cpp" />
     <ClCompile Include="Object.cpp" />
+    <ClCompile Include="PlayerPaddle.cpp" />
+    <ClCompile Include="PongBall.cpp" />
     <ClCompile Include="pRigidBody.cpp" />
     <ClCompile Include="pShape.cpp" />
     <ClCompile Include="pShapeBox.cpp" />
     <ClCompile Include="pShapeSphere.cpp" />
     <ClCompile Include="PhysicsWorld.cpp" />
-    <ClCompile Include="RigidBodyObject.cpp" />
+    <ClCompile Include="Wall.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

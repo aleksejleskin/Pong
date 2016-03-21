@@ -8,13 +8,14 @@ class pRigidBody
 {
 public:
 
+
 	struct RigidBodyConstructorInfo
 	{
 		float mass;
-		Vector3 position;
+		spVector3 position;
 		pShape* collisionShape;
 
-		RigidBodyConstructorInfo(float _mass, Vector3 _position, pShape* _shape)
+		RigidBodyConstructorInfo(float _mass, spVector3 _position, pShape* _shape)
 		{
 			mass = _mass;
 			position = _position;
@@ -22,34 +23,41 @@ public:
 		}
 	};
 
-	pRigidBody(float _mass, Vector3 _position, pShape* _CollisionShape);
+	pRigidBody(float _mass, spVector3 _position, pShape* _CollisionShape);
 	pRigidBody(const RigidBodyConstructorInfo _RigidBodyInfo);
 	~pRigidBody();
 	
 	//FUCNTIONS
-	void ApplyImpulse(Vector3 _forceDirection);
+	virtual void CollisionOccured(const CollisionInfo &_info);
+
+	void ApplyImpulse(const spVector3 _forceDirection);
+	void CalculateInverseMass();
+
+	void SetMass(float _newMass);
+	float GetMass();
+	float GetMassInverse();
 
 	pShape* GetShape();
-	Vector3 GetPosition();
-	void SetPosition(Vector3 _newPos);
-	Vector3 GetVelocity();
+	spVector3 GetPosition();
+	void SetPosition(spVector3 _newPos);
+	spVector3 GetVelocity();
 	float GetRestitution();
-	float GetMass();
+	
 	void SetUpRigidBody(const RigidBodyConstructorInfo _RigidBodyInfo);
-	float GetMassInverse();
+	
 	//collision check
 	void CollisionStateChanged(bool _isColliding);
 	bool m_isColliding;
 
 	pShape* m_CollisionShape;
-	Vector3 m_Postion;
-	Vector3 m_Scale;
-	Vector3	m_Rotation;
+	spVector3 m_Postion;
+	spVector3 m_Scale;
+	spVector3	m_Rotation;
 
 	float	m_Mass;
-	Vector3 m_LinearVelocity;
+	spVector3 m_LinearVelocity;
 	float	m_Restitution;
-	Vector3 m_Force;
-	float	m_MassInverse;
+	spVector3 m_Force;
+	float	m_InverseMass;
 };
 
