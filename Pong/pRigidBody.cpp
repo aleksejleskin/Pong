@@ -2,9 +2,9 @@
 
 
 
-pRigidBody::pRigidBody(float _mass, spVector3 _position, pShape* _CollisionShape) 
+pRigidBody::pRigidBody(float _mass, spVector3 _position, pShape* _CollisionShape, class GameObject *_owner)
 {
-	RigidBodyConstructorInfo RigidBodyInfo(_mass, _position, _CollisionShape);
+	RigidBodyConstructorInfo RigidBodyInfo(_mass, _position, _CollisionShape, _owner);
 	SetUpRigidBody(RigidBodyInfo);
 }
 
@@ -21,7 +21,8 @@ pRigidBody::~pRigidBody()
 void pRigidBody::SetUpRigidBody(const RigidBodyConstructorInfo _RigidBodyInfo)
 {
 	m_CollisionShape = _RigidBodyInfo.collisionShape;
-	m_Postion = _RigidBodyInfo.position;
+	m_Position = _RigidBodyInfo.position;
+	m_Owner = _RigidBodyInfo.Owner;
 
 	m_Mass = _RigidBodyInfo.mass;
 	CalculateInverseMass();
@@ -42,7 +43,7 @@ pShape* pRigidBody::GetShape()
 
 spVector3 pRigidBody::GetPosition()
 {
-	return m_Postion;
+	return m_Position;
 }
 
 spVector3 pRigidBody::GetVelocity()
@@ -52,7 +53,7 @@ spVector3 pRigidBody::GetVelocity()
 
 void pRigidBody::SetPosition(spVector3 _newPos)
 {
-	m_Postion = _newPos;
+	m_Position = _newPos;
 }
 
 void pRigidBody::SetMass(float _newMass)
@@ -71,8 +72,9 @@ float pRigidBody::GetRestitution()
 	return m_Restitution;
 }
 
-void pRigidBody::CollisionOccured(const CollisionInfo & _info)
+void pRigidBody::CollisionOccured(CollisionInfo & _info)
 {
+	m_CurrentCollision = _info;
 }
 
 void pRigidBody::ApplyImpulse(spVector3 _forceDirection)
@@ -101,4 +103,19 @@ void pRigidBody::CalculateInverseMass()
 	{
 		m_InverseMass = 1 / m_Mass;
 	}
+}
+
+void pRigidBody::SetObjectType(CollisionObjectType & _newType)
+{
+	m_ObjectType = _newType;
+}
+
+void pRigidBody::SetScale(spVector3 & _newScale)
+{
+	m_Scale = _newScale;
+}
+
+spVector3 pRigidBody::GetScale()
+{
+	return m_Scale;
 }

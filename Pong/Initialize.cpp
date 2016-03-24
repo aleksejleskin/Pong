@@ -2,7 +2,7 @@
 #include <string>
 #include "SDL.h"
 #include "Game.h"
-
+#include <SDL_ttf.h>
 
 
 int main(int, char**)
@@ -28,34 +28,57 @@ int main(int, char**)
 		return 1;
 	}
 
+
 	Game * GameModeSimple;
 	GameModeSimple = new Game(ren);
 	
-	SDL_Event event;
+	SDL_Event *SDLevent = new SDL_Event();
 	// Timing variables
 	Uint32 old_time = 0, current_time = 0;
 	float ftime = 0.0f;
 
+	bool m_allowUpdate = true;
 
-	while (GameModeSimple != nullptr)
+	bool quit = false;
+
+
+
+
+
+	while (quit != true)
 	{
+		m_allowUpdate = true;
+		if (SDLevent->type == SDL_WINDOWEVENT)
+		{
+			if (SDLevent->window.type == (SDL_WINDOWEVENT_MOVED || SDL_WINDOWEVENT_RESIZED))
+			{
+				m_allowUpdate = false;
+			}
+		}
+
+if (m_allowUpdate)
+		{
 		old_time = current_time;
 		current_time = SDL_GetTicks();
 		ftime = (current_time - old_time) / 1000.0f;
 
 		// Check for messages
-		if (SDL_PollEvent(&event))
+		if (SDL_PollEvent(SDLevent))
 		{
 			// Check for the quit message
-			if (event.type == SDL_QUIT)
+			if (SDLevent->type == SDL_QUIT)
 			{
+				std::cout << "QUIT" << std::endl;
 				// Quit the program
 				break;
 			}
 		}
 
-		GameModeSimple->Update(ftime);
-		GameModeSimple->Render(ren);
+
+
+			GameModeSimple->Update(ftime, SDLevent);
+			GameModeSimple->Render(ren);
+		}
 	}
 
 

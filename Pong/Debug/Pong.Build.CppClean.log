@@ -2,6 +2,8 @@ c:\users\aleks\documents\github\pong\pong\debug\vc140.pdb
 c:\users\aleks\documents\github\pong\pong\debug\vc140.idb
 c:\users\aleks\documents\github\pong\pong\debug\drawhelper.obj
 c:\users\aleks\documents\github\pong\pong\debug\game.obj
+c:\users\aleks\documents\github\pong\pong\debug\gameobject.obj
+c:\users\aleks\documents\github\pong\pong\debug\gameobjectrigidbody.obj
 c:\users\aleks\documents\github\pong\pong\debug\initialize.obj
 c:\users\aleks\documents\github\pong\pong\debug\object.obj
 c:\users\aleks\documents\github\pong\pong\debug\playerpaddle.obj
@@ -11,7 +13,10 @@ c:\users\aleks\documents\github\pong\pong\debug\pshape.obj
 c:\users\aleks\documents\github\pong\pong\debug\pshapebox.obj
 c:\users\aleks\documents\github\pong\pong\debug\pshapesphere.obj
 c:\users\aleks\documents\github\pong\pong\debug\physicsworld.obj
-c:\users\aleks\documents\github\pong\pong\debug\gameobjectrigidbody.obj
+c:\users\aleks\documents\github\pong\pong\debug\sptransform.obj
+c:\users\aleks\documents\github\pong\pong\debug\text.obj
+c:\users\aleks\documents\github\pong\pong\debug\textmanager.obj
+c:\users\aleks\documents\github\pong\pong\debug\wall.obj
 c:\users\aleks\documents\github\pong\debug\pong.ilk
 c:\users\aleks\documents\github\pong\debug\pong.exe
 c:\users\aleks\documents\github\pong\debug\pong.pdb

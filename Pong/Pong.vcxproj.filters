@@ -34,6 +34,18 @@
     <Filter Include="Header Files\PongGameObjects">
       <UniqueIdentifier>{05693463-b1bc-4320-a5b1-edb85916e7dc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Managers">
+      <UniqueIdentifier>{8313d769-c514-4d7c-8a02-77163ed31e0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Managers">
+      <UniqueIdentifier>{c1ea7be8-b10e-4f88-804c-70e12a0293b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components">
+      <UniqueIdentifier>{f3f82abb-d7d5-49c3-bc89-67d728a846df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components">
+      <UniqueIdentifier>{84d92be4-beef-4b59-a1e6-f52b1da106d6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="res_path.h">
@@ -90,6 +102,21 @@
     <ClInclude Include="Wall.h">
       <Filter>Header Files\PongGameObjects</Filter>
     </ClInclude>
+    <ClInclude Include="spTransform.h">
+      <Filter>Header Files\SimplePhysicsMath</Filter>
+    </ClInclude>
+    <ClInclude Include="TextManager.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Text.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="HelperFunctions.h">
+      <Filter>Header Files\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Initialize.cpp">
@@ -130,6 +157,18 @@
     </ClCompile>
     <ClCompile Include="Wall.cpp">
       <Filter>Source Files\PongGameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="spTransform.cpp">
+      <Filter>Source Files\SimplePhysics</Filter>
+    </ClCompile>
+    <ClCompile Include="Text.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="TextManager.cpp">
+      <Filter>Source Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,10 +1,10 @@
 #include "pShapeBox.h"
 
-pShapeBox::pShapeBox(spVector3 _min, spVector3 _max)
+pShapeBox::pShapeBox(spVector3 _extents)
 {
 	m_ShapeType = BOX_SHAPE;
-	m_min = _min;
-	m_max = _max;
+	m_max = spVector3(_extents.x, _extents.y, _extents.z);
+	m_min = m_max * -1;
 }
 
 pShapeBox::~pShapeBox()

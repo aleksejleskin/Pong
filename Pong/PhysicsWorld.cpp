@@ -16,6 +16,8 @@ PhysicsWorld::PhysicsWorld()
 	m_CollisionCheckArray[0][1] = &PhysicsWorld::AABBtoCircle;
 	m_CollisionCheckArray[1][0] = &PhysicsWorld::CircletoAABB;
 	m_CollisionCheckArray[1][1] = &PhysicsWorld::CircletoCircle;
+
+	_ColInfo = new pRigidBody::CollisionInfo();
 }
 
 
@@ -29,9 +31,11 @@ PhysicsWorld::~PhysicsWorld()
 		}
 	}
 	m_RigidBodyList.clear();
+
+	delete(_ColInfo);
 }
 
-bool PhysicsWorld::CircletoCircle(class pRigidBody *a, class pRigidBody *b)
+bool PhysicsWorld::CircletoCircle(class pRigidBody *a, class pRigidBody *b, struct pRigidBody::CollisionInfo * _info)
 {
 	//dont check collision if input is invalid.
 	if (a != nullptr || b != nullptr)
@@ -51,7 +55,7 @@ bool PhysicsWorld::CircletoCircle(class pRigidBody *a, class pRigidBody *b)
 		if (DistanceX + DistanceY <= r)
 		{
 			//collision info set back to each obejct
-			CollisionInfo objAInfo;
+			pRigidBody::CollisionInfo objAInfo;
 
 			//if objects are not inside each other
 			float distance = (aPos - bPos).Length();
@@ -68,6 +72,13 @@ bool PhysicsWorld::CircletoCircle(class pRigidBody *a, class pRigidBody *b)
 				objAInfo.ImpactNormal = spVector3(1, 0, 0);
 			}
 			a->CollisionOccured(objAInfo);
+
+			spVector3 direction = b->GetPosition() - a->GetPosition();
+			spVector3 normal = direction.Normalize();
+			//update velocities based on collision
+			ResolveCollision(a, b, normal);
+			_info->ImpactNormal = normal;
+			_info->CollidedWith = b;
 			return true;
 		}
 		else
@@ -82,7 +93,7 @@ bool PhysicsWorld::CircletoCircle(class pRigidBody *a, class pRigidBody *b)
 	}
 }
 
-bool PhysicsWorld::CircletoAABB( class pRigidBody *aRigidBody,  class pRigidBody *bRigidBody)
+bool PhysicsWorld::CircletoAABB( class pRigidBody *aRigidBody,  class pRigidBody *bRigidBody, pRigidBody::CollisionInfo * _info)
 {
 		// Setup a couple pointers to each object
 		pShapeSphere *ASphereShape = (pShapeSphere *)aRigidBody->GetShape();
@@ -102,13 +113,42 @@ bool PhysicsWorld::CircletoAABB( class pRigidBody *aRigidBody,  class pRigidBody
 		//collision point projected onto box.
 		spVector2 collisionPointProject = Clamp(aabb_half_extents* -1, aabb_half_extents, ShapeFromCenterDistnace);
 
-		cout << ((circleLocalPos - collisionPointProject).Length() < ASphereShape->GetRadius()) << endl;
+
 
 		//If distance between circle center and box projected collison point is less than circle radius , then colliding.
-		return ((circleLocalPos - collisionPointProject).Length() < ASphereShape->GetRadius());
+		if((circleLocalPos - collisionPointProject).Length() < ASphereShape->GetRadius())
+		{
+			//make collsiion info 
+			pRigidBody::CollisionInfo objCollisionInfo;
+			objCollisionInfo.CollidedWith = bRigidBody;
+			objCollisionInfo.ImpactPoint = spVector3(collisionPointProject.x, collisionPointProject.y,0);
+
+			aRigidBody->CollisionOccured(objCollisionInfo);
+
+			if (Drawhelper != nullptr)
+			{
+				SDL_Color Colour;
+				Colour.r = 255;
+				Drawhelper->Draw2DSphere(boxCenterPos - collisionPointProject, 10.0f, Colour, 10, 5.0f);
+			}
+
+			spVector3 direction =  spVector3(circleLocalPos.x, circleLocalPos.y, 0) - spVector3(collisionPointProject.x, collisionPointProject.y, 0);
+			spVector3 normal = direction.Normalize();
+			//update velocities based on collision
+
+			_info->ImpactNormal = normal;
+			_info->CollidedWith = bRigidBody;
+			ResolveCollision(aRigidBody, bRigidBody, normal);
+
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 }
 
-bool PhysicsWorld::AABBtoAABB( class pRigidBody *a,  class pRigidBody *b)
+bool PhysicsWorld::AABBtoAABB( class pRigidBody *a,  class pRigidBody *b, pRigidBody::CollisionInfo * _info)
 {
 	if (a != nullptr || b != nullptr)
 	{
@@ -133,15 +173,24 @@ bool PhysicsWorld::AABBtoAABB( class pRigidBody *a,  class pRigidBody *b)
 		{
 			return false;
 		}
+
+		
+
+		spVector3 direction = b->GetPosition() - a->GetPosition();
+		spVector3 normal = direction.Normalize();
+		_info->ImpactNormal = normal;
+		_info->CollidedWith = b;
+		//update velocities based on collision
+		ResolveCollision(a, b, normal);
 		return true;
 	}
 	return false;
 
 }
 
-bool PhysicsWorld::AABBtoCircle( class pRigidBody *a,  class  pRigidBody *b)
+bool PhysicsWorld::AABBtoCircle( class pRigidBody *a,  class  pRigidBody *b, pRigidBody::CollisionInfo * _info)
 {
-	return CircletoAABB(b, a);
+	return CircletoAABB(b, a, _info);
 }
 
 void PhysicsWorld::ResolveCollision(pRigidBody *a, pRigidBody *b, spVector3 _normal)
@@ -166,23 +215,30 @@ void PhysicsWorld::ResolveCollision(pRigidBody *a, pRigidBody *b, spVector3 _nor
 		// Apply impulse
 		spVector3 impulse = j * _normal;
 
-		a->m_LinearVelocity = a->m_LinearVelocity - a->GetMassInverse() * impulse;
-		b->m_LinearVelocity = b->m_LinearVelocity + b->GetMassInverse() * impulse;
+		if (a->m_ObjectType != pRigidBody::COLLISION_OBJECT)
+		{
+			a->m_LinearVelocity = a->m_LinearVelocity - a->GetMassInverse() * impulse;
+		}
+
+		if (b->m_ObjectType != pRigidBody::COLLISION_OBJECT)
+		{
+			b->m_LinearVelocity = b->m_LinearVelocity + b->GetMassInverse() * impulse;
+		}
 	}
 }
 
 void PhysicsWorld::EulerStep(float _deltaTick, pRigidBody * _rigidBody)
 {
 	spVector3 newPos = _rigidBody->m_LinearVelocity * _deltaTick;
-	_rigidBody->m_Postion = _rigidBody->m_Postion + newPos;
+	_rigidBody->m_Position = _rigidBody->m_Position + newPos;
 
 	spVector3 newVel  = (_rigidBody->GetMassInverse() * _rigidBody->m_Force) * _deltaTick;
 	_rigidBody->m_LinearVelocity = _rigidBody->m_LinearVelocity + newVel;
 }
 
-pRigidBody* PhysicsWorld::CreateRigidBody(float _mass, spVector3 _position, pShape* _Shape)
+pRigidBody* PhysicsWorld::CreateRigidBody(float _mass, spVector3 _position, pShape* _Shape, class GameObject * _Owner)
 {
-	pRigidBody::RigidBodyConstructorInfo RigidBodyInfo(_mass, _position, _Shape);
+	pRigidBody::RigidBodyConstructorInfo RigidBodyInfo(_mass, _position, _Shape, _Owner);
 	pRigidBody * newRigidBody = new pRigidBody(RigidBodyInfo);
 
 	m_RigidBodyList.push_back(newRigidBody);
@@ -209,22 +265,13 @@ void PhysicsWorld::stepSimulation(float _deltaTick)
 		{
 			if (obj1 != obj2)
 			{
-				if((this->*m_CollisionCheckArray[obj1->GetShape()->GetShapeType()][obj2->GetShape()->GetShapeType()])(obj1, obj2))
+				_ColInfo->ImpactNormal = spVector3(0, 0, 0);
+				if((this->*m_CollisionCheckArray[obj1->GetShape()->GetShapeType()][obj2->GetShape()->GetShapeType()])(obj1, obj2, _ColInfo))
 				{
-
-
-					spVector3 direction = obj2->GetPosition() - obj1->GetPosition();
-					spVector3 normal = direction.Normalize();
-					//update velocities based on collision
-					ResolveCollision(obj1, obj2, normal);
+					spVector3 normal = _ColInfo->ImpactNormal;
 
 					obj1->CollisionStateChanged(true);
-					obj2->CollisionStateChanged(true);
-				}
-				else
-				{
-					obj1->CollisionStateChanged(false);
-					obj2->CollisionStateChanged(false);
+					//obj1->CollisionOccured();
 				}
 			}
 		}

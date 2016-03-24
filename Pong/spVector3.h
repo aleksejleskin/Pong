@@ -139,3 +139,17 @@ __forceinline bool operator== (const spVector3 &_vIn1, const spVector3 &_vIn2)
 		(_vIn1.y == _vIn2.y) &&
 		(_vIn1.z == _vIn2.z));
 }
+//ADDITION
+
+__forceinline spVector3 operator+ (const spVector3 &_vIn1, const float &_fIn2)
+{
+	return spVector3(
+		_vIn1.x + _fIn2,
+		_vIn1.y + _fIn2,
+		_vIn1.z + _fIn2);
+}
+
+__forceinline spVector3 operator+ (const float &_fIn1, const spVector3 &_vIn2)
+{
+	return _vIn2 + _fIn1;
+}

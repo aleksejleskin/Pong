@@ -3,7 +3,7 @@
 class pShapeBox : public pShape
 {
 public:
-	pShapeBox(spVector3 _min, spVector3 _max);
+	pShapeBox(spVector3 _extents);
 
 	~pShapeBox();
 
